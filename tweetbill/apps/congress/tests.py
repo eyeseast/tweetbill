@@ -1,23 +1,14 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
+from django.conf import settings
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+from sunlight import Sunlight
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'))
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
-
->>> 1 + 1 == 2
-True
-"""}
-
+class ViewTest(TestCase):
+    
+    def test_search(self):
+        resp = self.client.get('/search/', {'name': 'Nancy Pelosi'})
+        results = sunlight.legislators.search(name='Nancy Pelosi')
+        
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['results'], results)

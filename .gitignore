@@ -1,2 +1,16 @@
-*.pyc
+*.py[co]
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+
+# Installer logs
 pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+
+local_settings.py

@@ -1,7 +1,15 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('congress.views',
+    
+    # search
     url(r'^search/$', 'search', name='congress_search'),
+    
+    url(r'^search/zip/$', 'legislators_for_zip'),
+    
+    url(r'^search/zip/(?P<zipcode>\d{5})/$',
+        'legislators_for_zip',
+        name="congress_search_zip"),
     
     # legislators
     url(r'^legislators/$', 

@@ -12,6 +12,14 @@ class ViewTest(TestCase):
         
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['results'], results)
+
+    def test_search_zip(self):
+        resp = self.client.get('/search/zip/22206/')
+        results = sunlight.legislators.allForZip(zip=22206)
+        results = [r['legislator'] for r in results]
+        
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(list(resp.context['legislators']), results)
     
     def test_house_list(self):
         resp = self.client.get('/legislators/house/')

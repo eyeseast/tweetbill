@@ -12,3 +12,24 @@ class ViewTest(TestCase):
         
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['results'], results)
+    
+    def test_house_list(self):
+        resp = self.client.get('/legislators/house/')
+        results = sunlight.legislators.getList(title='Rep')
+        results = [r['legislator'] for r in results]
+        
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(list(resp.context['legislators']), results)
+    
+    def test_state_list(self):
+        resp = self.client.get('/legislators/ca/')
+        results = sunlight.legislators.getList(state='ca')
+        results = [r['legislator'] for r in results]
+        
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(list(resp.context['legislators']), results)
+    
+    def test_office_state_list(self):
+        resp = self.client.get('/legislators/senate/me/'),
+        results = sunlight.legislators.getList(state='me', title='Sen')
+    

@@ -13,4 +13,6 @@ pip-log.txt
 .coverage
 .tox
 
+# specifics
 local_settings.py
+.cache

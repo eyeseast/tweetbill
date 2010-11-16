@@ -29,9 +29,13 @@ class CommitteeTest(TestCase):
         bills = nyt.bills.introduced('house', 111)
         for bill in bills['bills']:
             
-            if isinstance(bill['committees'], basestring):
-                comm = Committee.objects.get(name=bill['committees'])
-                self.assertEqual(comm.name, bill['committees'])
+            if bill['committees'] and isinstance(bill['committees'], basestring):
+                try:
+                    comm = Committee.objects.get(name=bill['committees'])
+                    self.assertEqual(comm.name, bill['committees'])
+                except Committee.DoesNotExist:
+                    print(bill['committees'])
+                    self.fail()
             
             else: # it's a list
                 for comm in bill['committees']:

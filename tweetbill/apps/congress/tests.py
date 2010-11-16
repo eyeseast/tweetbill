@@ -16,7 +16,6 @@ class ViewTest(TestCase):
     def test_search_zip(self):
         resp = self.client.get('/search/zip/22206/')
         results = sunlight.legislators.allForZip(zip=22206)
-        results = [r['legislator'] for r in results]
         
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(list(resp.context['legislators']), results)
@@ -24,7 +23,6 @@ class ViewTest(TestCase):
     def test_house_list(self):
         resp = self.client.get('/legislators/house/')
         results = sunlight.legislators.getList(title='Rep')
-        results = [r['legislator'] for r in results]
         
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(list(resp.context['legislators']), results)
@@ -32,7 +30,6 @@ class ViewTest(TestCase):
     def test_state_list(self):
         resp = self.client.get('/legislators/ca/')
         results = sunlight.legislators.getList(state='ca')
-        results = [r['legislator'] for r in results]
         
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(list(resp.context['legislators']), results)

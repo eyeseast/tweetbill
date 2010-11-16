@@ -32,7 +32,6 @@ def search(request):
 def legislators_for_zip(request, zipcode=None):
     if zipcode:
         legislators = sunlight.legislators.allForZip(zip=zipcode)
-        legislators = (l['legislator'] for l in legislators)
         return render_to_response('congress/legislator_list.html', {
                                   'legislators': legislators, 'zip': zipcode
                                   }, RequestContext(request))
@@ -49,7 +48,5 @@ def filter_legislators(request, **kwargs):
     if 'office' in kwargs:
         kwargs['title'] = OFFICE_TITLES[kwargs.pop('office').lower()]
     
-    legislators = sunlight.legislators.getList(**kwargs)
-    legislators = (l['legislator'] for l in legislators)
-    
+    legislators = sunlight.legislators.getList(**kwargs)    
     return render_to_response(template, {'legislators': legislators}, RequestContext(request))

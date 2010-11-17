@@ -5,7 +5,10 @@ from congress import load
 from congress.models import Committee
 
 from nytcongress import NytCongress
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'))
+from sunlight import Sunlight
+
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None))
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None))
 
 class LoaderTest(TestCase):
     
@@ -17,7 +20,15 @@ class LoaderTest(TestCase):
             comms = set(c['name'] for c in nyt.committees.filter(chamber.lower())['committees'])
             names = set(c.name for c in Committee.objects.filter(chamber=chamber.lower()))
             self.assertEqual(comms, names)
-        
+    
+    def test_load_members(self):
+        congress = sunlight.legislators.getList()
+        load.members()
+        members = Legislator.objects.all()
+        self.assertEqual(
+            set(m.id for m in members),
+            set(c['bioguide_id'] for c in congress)
+        )
 
 class CommitteeTest(TestCase):
     

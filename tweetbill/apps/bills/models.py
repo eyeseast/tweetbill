@@ -38,7 +38,7 @@ class BillAction(models.Model):
     
     class Meta:
         get_latest_by = "datetime"
-        ordering = ('-datetime')
+        ordering = ('-datetime',)
     
     def __unicode__(self):
         return self.description

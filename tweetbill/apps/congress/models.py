@@ -39,3 +39,37 @@ class Committee(models.Model):
         if not hasattr(self, '_members'):
             self._members = sunlight.committees.get(id=self.id).get('members')
         return self._members
+
+class Legislator(models.Model):
+    """
+    A member of Congress, in either the Senate or House.
+    We're storing as little info here as we can and relying
+    on the NYT and Sunlight APIs for details.
+    """
+    CHAMBER_CHOICES = (
+        ('house', 'House of Representatives'),
+        ('senate', 'Senate'),
+    )
+    
+    PARTY_CHOICES = (
+        ('D', 'Democrat'),
+        ('R', 'Republican'),
+        ('I', 'Independent'),
+    )
+    title = models.CharField(max_length=5, blank=True)
+    party = models.CharField(max_length=1, choices=PARTY_CHOICES)
+
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100, blank=True, null=True)
+    name_suffix = models.CharField(max_length=10, blank=True, null=True)
+    
+#     eventful_id
+#     crp_id
+#     votesmart_id
+#     govtrack_id
+#     bioguide_id
+#     fec_id
+    
+    

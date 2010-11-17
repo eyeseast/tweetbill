@@ -2,7 +2,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from congress import load
-from congress.models import Committee
+from congress.models import Committee, Legislator
 
 from nytcongress import NytCongress
 from sunlight import Sunlight
@@ -44,9 +44,8 @@ class CommitteeTest(TestCase):
                 try:
                     comm = Committee.objects.get(name=bill['committees'])
                     self.assertEqual(comm.name, bill['committees'])
-                except Committee.DoesNotExist:
-                    print(bill['committees'])
-                    self.fail()
+                except Committee.DoesNotExist, e:
+                    self.fail("%s does not exist" % bill['committees'])
             
             else: # it's a list
                 for comm in bill['committees']:

@@ -56,6 +56,15 @@ class Legislator(models.Model):
         ('R', 'Republican'),
         ('I', 'Independent'),
     )
+    
+    NAME_FIELDS = (
+        'first_name',
+        'middle_name',
+        'last_name',
+        'name_suffix',
+    )
+    
+    id = models.CharField(max_length=10, primary_key=True)
     title = models.CharField(max_length=5, blank=True)
     party = models.CharField(max_length=1, choices=PARTY_CHOICES)
 
@@ -65,11 +74,28 @@ class Legislator(models.Model):
     nickname = models.CharField(max_length=100, blank=True, null=True)
     name_suffix = models.CharField(max_length=10, blank=True, null=True)
     
-#     eventful_id
-#     crp_id
-#     votesmart_id
-#     govtrack_id
-#     bioguide_id
-#     fec_id
+    # ids for other services
+    eventful_id = models.CharField(max_length=30, blank=True, null=True)
+    crp_id = models.CharField(max_length=30, blank=True, null=True)
+    votesmart_id = models.CharField(max_length=30, blank=True, null=True)
+    govtrack_id = models.CharField(max_length=30, blank=True, null=True)
+    fec_id = models.CharField(max_length=30, blank=True, null=True)
     
+    class Meta:
+        ordering = ('last_name', 'first_name')
+    
+    def __unicode__(self):
+        return u"%s (%s)" % (self.full_name, self.party)
+    
+    @property
+    def full_name(self):
+        parts = filter(bool, [getattr(self, f) for f in self.NAME_FIELDS])
+        return ' '.join(parts)
+    
+    @property
+    def common_name(self):
+        parts = filter(bool, [getattr(self, f) for f in self.NAME_FIELDS])
+        if self.nickname:
+            parts[0] = self.nickname
+        return ' '.join(parts)
     

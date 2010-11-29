@@ -77,9 +77,10 @@ class Legislator(models.Model):
     # ids for other services
     eventful_id = models.CharField(max_length=30, blank=True, null=True)
     crp_id = models.CharField(max_length=30, blank=True, null=True)
-    votesmart_id = models.CharField(max_length=30, blank=True, null=True)
-    govtrack_id = models.CharField(max_length=30, blank=True, null=True)
     fec_id = models.CharField(max_length=30, blank=True, null=True)
+    govtrack_id = models.CharField(max_length=30, blank=True, null=True)
+    twitter_id = models.CharField(max_length=100, blank=True, null=True)
+    votesmart_id = models.CharField(max_length=30, blank=True, null=True)
     
     class Meta:
         ordering = ('last_name', 'first_name')

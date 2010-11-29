@@ -1,0 +1,8 @@
+# basics
+Django
+geopy
+httplib2
+
+# API Wrappers
+-e git+git://github.com/eyeseast/simple-sunlight.git#egg=simple_sunlight
+-e git+git://github.com/eyeseast/python-nytcongress.git#egg=python-nytcongress

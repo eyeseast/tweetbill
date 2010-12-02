@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
+
+from congress.models import Legislator
 
 from sunlight import Sunlight
 from nytcongress import NytCongress, get_congress
@@ -27,6 +29,16 @@ def search(request):
     
     return render_to_response('congress/search.html', {
                               'name': name, 'results': results
+                              }, RequestContext(request))
+
+def legislator_detail(request, member_id):
+    member = get_object_or_404(Legislator, id__iexact=member_id)
+    bills = {
+        'introduced': nyt.bills.by_member(member_id, 'introduced'),
+        'updated'   : nyt.bills.by_member(member_id, 'updated')
+    }
+    return render_to_response('congress/legislator_detail.html', {
+                              'member': member, 'bills': bills
                               }, RequestContext(request))
 
 def legislators_for_zip(request, zipcode=None):

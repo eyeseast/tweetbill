@@ -1,0 +1,13 @@
+{% extends "congress/base.html" %}
+
+{% block content %}
+	<div id="legislators">
+		{% for legislator in legislators %}
+		<div id="{{ legislator.bioguide_id }}" class="legislator {{ legislator.party }}">
+			<a href="{% url congress_legislator_detail legislator.bioguide_id %}">
+				{{ legislator.title }}. {{ legislator.firstname }} {{ legislator.lastname }} ({{ legislator.party }})
+			</a>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}

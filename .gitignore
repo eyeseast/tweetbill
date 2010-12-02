@@ -16,3 +16,5 @@ pip-log.txt
 # specifics
 local_settings.py
 .cache
+.DS_Store
+*.db

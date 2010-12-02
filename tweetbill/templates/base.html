@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 	<meta charset="UTF-8" />
-		<title>{% block title %}Hello, Congress!{% endblock %}</title>
+		<title>{% block title %}TweetBill!{% endblock %}</title>
 		{% block css %}
 		<link href="{{ MEDIA_URL }}css/blueprint/screen.css" rel="stylesheet" type="text/css" media="screen" />
 		<style>
@@ -20,6 +20,13 @@
 			<header id="masthead" class="container">
 			{% block masthead %}
 			<h1><a href="/">TweetBill</a></h1>
+			<nav class="">
+				<ul>
+					<li><a href="">Find Legislators</a></li>
+					<li><a href="">Track Bills</a></li>
+					<li><a href="">Take Action</a></li>
+				</ul>
+			</nav>
 			{% endblock %}
 			</header>
 		</div>

@@ -88,6 +88,10 @@ class Legislator(models.Model):
     def __unicode__(self):
         return u"%s (%s)" % (self.full_name, self.party)
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ("congress_legislator_detail", None, {'member_id': self.id})
+    
     @property
     def full_name(self):
         parts = filter(bool, [getattr(self, f) for f in self.NAME_FIELDS])

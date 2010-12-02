@@ -15,6 +15,10 @@ urlpatterns = patterns('congress.views',
     url(r'^legislators/$', 
         'filter_legislators', 
         name="congress_legislators_all"),
+
+    url(r'^legislators/(?P<member_id>\w{7})/$',
+        'legislator_detail',
+        name="congress_legislator_detail"),
     
     url(r'^legislators/(?P<state>[A-Za-z]{2})/$', 
         'filter_legislators', 

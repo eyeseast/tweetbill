@@ -2,6 +2,7 @@
 Django
 geopy
 httplib2
+django-debug-toolbar
 
 # API Wrappers
 -e git+git://github.com/eyeseast/simple-sunlight.git#egg=simple_sunlight

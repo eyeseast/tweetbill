@@ -1,8 +1,14 @@
 from django.conf import settings
 from django.test import TestCase
 
+from congress import load
+from congress.models import Committee, Legislator
+
+from nytcongress import NytCongress
 from sunlight import Sunlight
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'))
+
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None))
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None))
 
 class ViewTest(TestCase):
     
@@ -35,8 +41,24 @@ class ViewTest(TestCase):
         self.assertEqual(list(resp.context['legislators']), results)
     
     def test_office_state_list(self):
-        resp = self.client.get('/legislators/senate/me/'),
+        resp = self.client.get('/legislators/senate/me/')
         results = sunlight.legislators.getList(state='me', title='Sen')
+        self.assertEqual(list(resp.context['legislators']), results)
+    
+    def test_legislator_detail(self):
+        load.members(title='Sen')
+        resp = self.client.get('/legislators/S000320/') # Richard Shelby
+        
+        self.assertEqual(resp.status_code, 200)
+        try:
+            shelby = resp.context['member']
+        except Exception, e:
+            self.fail(e)
+            return
+        
+        
+        
+        
     
 class BadViewTest(TestCase):
     

@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'congress',
     'bills',
     'debug_toolbar',
+    'gunicorn',
 )
 
 try:

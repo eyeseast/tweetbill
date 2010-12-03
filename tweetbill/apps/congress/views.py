@@ -4,13 +4,13 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 
-from congress.models import Legislator
+from congress.models import Committee, Legislator
 
+from nytcongress import NytCongress
 from sunlight import Sunlight
-from nytcongress import NytCongress, get_congress
 
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'))
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'))
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None))
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None))
 
 OFFICE_TITLES = {
     'house': 'Rep',

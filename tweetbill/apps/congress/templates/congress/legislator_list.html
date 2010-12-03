@@ -2,13 +2,21 @@
 
 {% block content %}
 	<div id="legislators">
-		{% for legislator in legislators %}
+	{% regroup legislators|dictsortreversed:"title" by title as legislators %}
+	{% for office in legislators %}
+	{% if office.grouper == "Sen" %}<h2>Senators</h2>
+	{% else %}<h2>Representatives</h2>{% endif %}
+		{% for legislator in office.list|dictsort:"lastname" %}
 		<div id="{{ legislator.bioguide_id }}" class="legislator {{ legislator.party }}">
 			<img src="{{ MEDIA_URL }}img/legislators/small/{{ legislator.bioguide_id }}.jpg" width="40" height="50" />
-			<a href="{% url congress_legislator_detail legislator.bioguide_id %}">
-				{{ legislator.title }}. {{ legislator.firstname }} {{ legislator.lastname }} ({{ legislator.party }})
-			</a>
+			<div class="name">{{ legislator.title }}. {{ legislator.firstname }} {{ legislator.lastname }} ({{ legislator.party }})</div>
+			<div class="links">
+				<a href="{% url congress_legislator_detail legislator.bioguide_id %}">Bills</a> |
+				<a href="{% url congress_legislator_detail legislator.bioguide_id %}#contact">Contact</a>
+			</div>
 		</div>
 		{% endfor %}
+	{% endfor %}
+		
 	</div>
 {% endblock %}

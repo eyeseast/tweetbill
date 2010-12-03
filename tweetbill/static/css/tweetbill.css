@@ -1,0 +1,14 @@
+/* legislator list */
+
+div.legislator {
+	margin-bottom: 1.5em;
+}
+
+div.legislator:hover div.name {
+	color: #3f3f3f;
+}
+
+div.legislator img {
+	float: left;
+	margin: .25em;
+}

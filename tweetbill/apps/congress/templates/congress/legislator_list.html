@@ -4,6 +4,7 @@
 	<div id="legislators">
 		{% for legislator in legislators %}
 		<div id="{{ legislator.bioguide_id }}" class="legislator {{ legislator.party }}">
+			<img src="{{ MEDIA_URL }}img/legislators/small/{{ legislator.bioguide_id }}.jpg" alt="{{ legislator.title }}. {{ legislator.firstname }} {{ legislator.lastname }} ({{ legislator.party }})" title="{{ legislator.title }}. {{ legislator.firstname }} {{ legislator.lastname }} ({{ legislator.party }})" width="40" height="50" />
 			<a href="{% url congress_legislator_detail legislator.bioguide_id %}">
 				{{ legislator.title }}. {{ legislator.firstname }} {{ legislator.lastname }} ({{ legislator.party }})
 			</a>

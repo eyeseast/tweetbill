@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 
@@ -58,7 +58,10 @@ def filter_legislators(request, **kwargs):
     template = kwargs.pop('template', 'congress/legislator_list.html')
     
     if 'office' in kwargs:
-        kwargs['title'] = OFFICE_TITLES[kwargs.pop('office').lower()]
+        try:
+            kwargs['title'] = OFFICE_TITLES[kwargs.pop('office').lower()]
+        except KeyError:
+            raise Http404
     
     legislators = sunlight.legislators.getList(**kwargs)    
     return render_to_response(template, {'legislators': legislators}, RequestContext(request))

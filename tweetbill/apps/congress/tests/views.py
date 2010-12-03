@@ -38,3 +38,10 @@ class ViewTest(TestCase):
         resp = self.client.get('/legislators/senate/me/'),
         results = sunlight.legislators.getList(state='me', title='Sen')
     
+class BadViewTest(TestCase):
+    
+    def test_bad_office(self):
+        resp = self.client.get('/legislators/notachamber/')
+        self.assertEqual(resp.status_code, 404)
+
+

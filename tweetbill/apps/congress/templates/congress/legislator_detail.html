@@ -1,1 +1,18 @@
 {% extends "congress/base.html" %}
+
+{% block title %}{{ member.common_name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<div id="member">
+	<h2>{{ member }}</h2>
+	<div class="image">
+		<img src="{{ member.image }}" />
+	</div>
+</div>
+
+<div id="bills">
+	<div id="introduced"></div>
+	<div id="updated"></div>
+</div>
+
+{% endblock %}

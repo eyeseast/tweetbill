@@ -52,7 +52,7 @@ def members(**kwargs):
             
             # other fields are just copied from Sunlight
             for k, v in m.items():
-                if hasattr(m, k):
-                    setattr(m, k, v)
+                if hasattr(member, k):
+                    setattr(member, k, v)
             
             member.save()

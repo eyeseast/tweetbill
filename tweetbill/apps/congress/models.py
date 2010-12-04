@@ -1,4 +1,6 @@
 import datetime
+import os
+
 from django.conf import settings
 from django.db import models
 
@@ -104,3 +106,9 @@ class Legislator(models.Model):
             parts[0] = self.nickname
         return ' '.join(parts)
     
+    def image(self, size='large'):
+        return os.path.join(
+            settings.MEDIA_URL,
+            'img', 'legislators',
+            size, '%s.jpg' % self.id
+        )

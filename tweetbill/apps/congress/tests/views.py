@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from congress import load
@@ -46,18 +47,11 @@ class ViewTest(TestCase):
         self.assertEqual(list(resp.context['legislators']), results)
     
     def test_legislator_detail(self):
-        load.members(title='Sen')
-        resp = self.client.get('/legislators/S000320/') # Richard Shelby
-        
-        self.assertEqual(resp.status_code, 200)
-        try:
-            shelby = resp.context['member']
-        except Exception, e:
-            self.fail(e)
-            return
-        
-        
-        
+        load.members()
+        for member in sunlight.legislators.getList():
+            m = Legislator.objects.get(id=member['bioguide_id'])
+            resp = self.client.get(reverse('congress_legislator_detail', args=(member['bioguide_id'],)))
+            self.assertEqual(m, resp.context['member'])
         
     
 class BadViewTest(TestCase):

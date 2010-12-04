@@ -34,8 +34,8 @@ def search(request):
 def legislator_detail(request, member_id):
     member = get_object_or_404(Legislator, id__iexact=member_id)
     bills = {
-        'introduced': nyt.bills.by_member(member_id, 'introduced'),
-        'updated'   : nyt.bills.by_member(member_id, 'updated')
+        'introduced': nyt.bills.by_member(member_id, 'introduced')['bills'],
+        'updated'   : nyt.bills.by_member(member_id, 'updated')['bills']
     }
     return render_to_response('congress/legislator_detail.html', {
                               'member': member, 'bills': bills

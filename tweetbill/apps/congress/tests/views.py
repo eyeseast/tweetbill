@@ -48,10 +48,21 @@ class ViewTest(TestCase):
     
     def test_legislator_detail(self):
         load.members()
+        failed = []
         for member in sunlight.legislators.getList():
-            m = Legislator.objects.get(id=member['bioguide_id'])
-            resp = self.client.get(reverse('congress_legislator_detail', args=(member['bioguide_id'],)))
-            self.assertEqual(m, resp.context['member'])
+            try:
+                m = Legislator.objects.get(id=member['bioguide_id'])
+                resp = self.client.get(reverse('congress_legislator_detail', args=(member['bioguide_id'],)))
+                self.assertEqual(m.id, member['bioguide_id'])
+                self.assertEqual(
+                    nyt.bills.by_member(m.id)['bills'],
+                    resp.context['bills']['introduced']
+                )
+            except Exception, e:
+                failed.append('\n'.join([m.full_name, e]))
+        
+        if failed:
+            self.fail('\n'.join(failed))
         
     
 class BadViewTest(TestCase):

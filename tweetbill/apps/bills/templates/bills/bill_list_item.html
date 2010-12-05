@@ -1,0 +1,6 @@
+{% with bill.number|cut:"."|lower as bill_id %}
+<div id="{{ bill_id }}" class="bill">
+	<h4>{{ bill.title }}</h4>
+	<p>{{ bill.number }} | Introduced {{ bill.introduced_date }}</p>
+</div>
+{% endwith %}

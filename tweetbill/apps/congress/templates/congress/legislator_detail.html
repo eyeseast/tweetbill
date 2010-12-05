@@ -13,11 +13,11 @@
 <div id="bills">
 	
 	<div id="introduced">
-		{% for bill in introduced %}
+		{% for bill in bills.introduced %}
 			{% include "bills/bill_list_item.html" %}
 		{% endfor %}
 	</div>
-		{% for bill in updated %}
+		{% for bill in bills.updated %}
 			{% include "bills/bill_list_item.html" %}
 		{% endfor %}
 	<div id="updated"></div>

@@ -2,7 +2,10 @@ import datetime
 from django.conf import settings
 from django.db import models
 
+from django.contrib.auth.models import User
+
 from tweetbill.lib.managers import manager_from
+from congress.models import Legislator, Committee
 
 from nytcongress import NytCongress, get_congress
 from sunlight import Sunlight
@@ -23,7 +26,26 @@ class BillSubject(models.Model):
 
 
 class Bill(models.Model):
-    pass
+    "A bill. Only a bill."
+    congress = models.PositiveIntegerField()
+    number = models.CharField(max_length=20)
+    nyt_uri = models.URLField(verify_exists=False)
+    title = models.CharField(max_length=255)
+    introduced_date = models.DateField()
+    latest_major_action_date = models.DateField(blank=True, null=True)
+    
+    sponsor = models.ForeignKey(Legislator, related_name="bills_sponsored")
+    cosponsors = models.ManyToManyField(Legislator, related_name="bills_cosponsored", blank=True, null=True)
+    committees = models.ManyToManyField(Committee, related_name="bills", blank=True, null=True)
+    subjects = models.ManyToManyField(BillSubject, related_name="bills", blank=True, null=True)
+    watchers = models.ManyToManyField(User, related_name="bills_watched")
+    
+    class Meta:
+        get_latest_by = "latest_major_action"
+        ordering = ('-latest_major_action_date',)
+        
+    def __unicode__(self):
+        return self.title
 
 
 class BillAction(models.Model):

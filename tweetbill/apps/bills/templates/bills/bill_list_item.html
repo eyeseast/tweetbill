@@ -1,7 +1,13 @@
 {% load congress_tags %}
 {% with bill.number|cut:"."|lower as bill_id %}
 <div id="{{ bill_id }}" class="bill">
-	<h4>{{ bill.title }}</h4>
-	<p>{{ bill.number }} | Introduced {{ bill.introduced_date|parsedate:"N j, Y" }}</p>
+	<h4><span class="bill-number">{{ bill.number }}</span> | {{ bill.title }}</h4>
+	<aside class="">{{ bill.latest_major_action_date|parsedate:"N j, Y" }}: {{ bill.latest_major_action }}</aside>
+	<nav class="bill-actions">
+	<ul class="actions">
+		<li class="action"><a href="">Details</a></li>
+		<li class="action"><a href="">Follow</a></li>
+	</ul>
+	</nav>
 </div>
 {% endwith %}

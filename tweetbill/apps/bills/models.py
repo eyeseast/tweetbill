@@ -27,6 +27,7 @@ class BillSubject(models.Model):
 
 class Bill(models.Model):
     "A bill. Only a bill."
+    id = models.CharField(max_length=30, primary_key=True)
     congress = models.PositiveIntegerField()
     number = models.CharField(max_length=20)
     nyt_uri = models.URLField(verify_exists=False)
@@ -38,7 +39,7 @@ class Bill(models.Model):
     cosponsors = models.ManyToManyField(Legislator, related_name="bills_cosponsored", blank=True, null=True)
     committees = models.ManyToManyField(Committee, related_name="bills", blank=True, null=True)
     subjects = models.ManyToManyField(BillSubject, related_name="bills", blank=True, null=True)
-    watchers = models.ManyToManyField(User, related_name="bills_watched")
+    watchers = models.ManyToManyField(User, related_name="bills_watched", blank=True, null=True)
     
     class Meta:
         get_latest_by = "latest_major_action"
@@ -46,6 +47,15 @@ class Bill(models.Model):
         
     def __unicode__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = self._get_id()
+        super(Bill, self).save(*args, **kwargs)
+    
+    def _get_id(self):
+        "Get unique ID for a bill using Congress and bill number"
+        return u"%s-%s" % (self.congress, self.number)
 
 
 class BillAction(models.Model):

@@ -69,6 +69,7 @@ class Legislator(models.Model):
     id = models.CharField(max_length=10, primary_key=True)
     title = models.CharField(max_length=5, blank=True)
     party = models.CharField(max_length=1, choices=PARTY_CHOICES)
+    nyt_uri = models.URLField(max_length=255, verify_exists=False)
 
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, blank=True, null=True)
@@ -89,6 +90,12 @@ class Legislator(models.Model):
     
     def __unicode__(self):
         return u"%s (%s)" % (self.full_name, self.party)
+    
+    def save(self, *args, **kwargs):
+        if not self.nyt_uri:
+            self.nyt_uri = "http://api.nytimes.com/svc/politics/v3/us/legislative/congress/members/%s.json" \
+                % self.id
+        super(Legislator, self).save(*args, **kwargs)
     
     @models.permalink
     def get_absolute_url(self):

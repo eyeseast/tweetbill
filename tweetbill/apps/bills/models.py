@@ -63,14 +63,26 @@ class BillAction(models.Model):
     Something that happens in the life of a bill,
     as recorded on the last_major_action key in 
     NYT Congress API responses
+    
+    IDs are <congress>-<bill-number>-<index>
     """
+    id = models.CharField(max_length=30, primary_key=True)
     bill = models.ForeignKey(Bill, related_name="actions")
+    index = models.IntegerField()
     datetime = models.DateTimeField()
     description = models.TextField()
     
+    # whose news feeds does this action go in
+    watchers = models.ManyToManyField(User, related_name="bill_actions")
+    
     class Meta:
-        get_latest_by = "datetime"
-        ordering = ('-datetime',)
+        get_latest_by = "index"
+        ordering = ('-index',)
     
     def __unicode__(self):
         return self.description
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = u"%s-%s" % (self.bill.id, self.index)
+        super(BillAction, self).save(*args, **kwargs)

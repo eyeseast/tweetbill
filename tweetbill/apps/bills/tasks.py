@@ -4,6 +4,8 @@ import sys
 from dateutil.parser import parse
 from django.conf import settings
 
+from tweetbill.lib.utils import parse_date
+
 from bills.models import Bill, BillAction
 from congress.models import Legislator, Committee
 
@@ -14,10 +16,6 @@ from sunlight import Sunlight
 nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None), None)
 sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), None)
 
-def parse_date(s):
-    if isinstance(s, datetime.datetime):
-        return s
-    return parse(s)
 
 def get_recent_bills():
     """
@@ -74,10 +72,38 @@ def process_bill(bill_uri):
             introduced_date = parse_date(nyt_bill['introduced_date']),
             sponsor = sponsor,
         )
+        
+    set_bill_actions(bill, nyt_bill['actions'])
 
 def set_bill_actions(bill, actions):
     """
     Given a bill and a list of actions (dict)
     add new ones to the bill
     """
-    pass
+    NEW_ACTIONS = []
+    
+    # make a copy before we do anything else
+    # reverse orders so oldest actions are first
+    actions = reversed(list(actions))
+    
+    # set datetimes to datetime objects
+    # then check for existence in the db
+    for i, action in enumerate(actions):
+        action['datetime'] = parse_date(action['datetime'])
+        id = u"%s-%s" % (bill.id, i)
+        action['bill'] = bill
+        action['index'] = i
+        
+        a, created = BillAction.objects.get_or_create(**action)
+        if created:
+            NEW_ACTIONS.append(a)
+    
+    #if NEW_ACTIONS:
+    #    send_alerts(*NEW_ACTIONS)
+    
+def send_alerts(*actions):
+    """
+    Blast out alerts to anyone watching
+    """
+    # for now, just print out new actions
+    print '\n'.join(actions)

@@ -8,7 +8,7 @@ from nytcongress import NytCongress
 from sunlight import Sunlight
 
 nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None), None)
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), None)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), cache=None)
 
 class LoaderTest(TestCase):
     

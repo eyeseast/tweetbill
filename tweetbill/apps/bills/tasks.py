@@ -14,7 +14,7 @@ from sunlight import Sunlight
 
 # Don't cache responses, so we always get the freshest info
 nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None), None)
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), None)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), cache=None)
 
 
 def get_recent_bills():

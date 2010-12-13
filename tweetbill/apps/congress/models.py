@@ -2,14 +2,15 @@ import datetime
 import os
 
 from django.conf import settings
+from django.core.cache import cache
 from django.contrib.localflavor.us.models import USStateField, PhoneNumberField
 from django.db import models
 
 from nytcongress import NytCongress, get_congress
 from sunlight import Sunlight
 
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'))
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'))
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'), cache)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'), cache=cache)
 
 class Committee(models.Model):
     """
@@ -92,7 +93,7 @@ class Legislator(models.Model):
     phone = PhoneNumberField(blank=True)
     
     class Meta:
-        ordering = ('last_name', 'first_name')
+        ordering = ('lastname', 'firstname')
     
     def __unicode__(self):
         return u"%s. %s (%s-%s)" % (self.title, self.full_name, self.party, self.state)

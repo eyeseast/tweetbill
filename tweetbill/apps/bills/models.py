@@ -12,7 +12,7 @@ from nytcongress import NytCongress, get_congress
 from sunlight import Sunlight
 
 nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None), cache)
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), cache)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), cache=cache)
 
 
 class BillSubject(models.Model):

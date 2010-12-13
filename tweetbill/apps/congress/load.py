@@ -8,7 +8,7 @@ from nytcongress import NytCongress, get_congress
 
 # Don't cache on loaders
 nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'), None)
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'), None)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'), cache=None)
 
 def committees(*chambers):
     """

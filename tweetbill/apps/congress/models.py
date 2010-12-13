@@ -2,6 +2,7 @@ import datetime
 import os
 
 from django.conf import settings
+from django.contrib.localflavor.us.models import USStateField, PhoneNumberField
 from django.db import models
 
 from nytcongress import NytCongress, get_congress
@@ -60,20 +61,21 @@ class Legislator(models.Model):
     )
     
     NAME_FIELDS = (
-        'first_name',
-        'middle_name',
-        'last_name',
+        'firstname',
+        'middlename',
+        'lastname',
         'name_suffix',
     )
     
     id = models.CharField(max_length=10, primary_key=True)
     title = models.CharField(max_length=5, blank=True)
     party = models.CharField(max_length=1, choices=PARTY_CHOICES)
-    nyt_uri = models.URLField(max_length=255, verify_exists=False)
+    nyt_uri = models.URLField(max_length=255, verify_exists=False)    
+    state = USStateField()
 
-    first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100, blank=True, null=True)
-    last_name = models.CharField(max_length=100)
+    firstname = models.CharField(max_length=100)
+    middlename = models.CharField(max_length=100, blank=True, null=True)
+    lastname = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100, blank=True, null=True)
     name_suffix = models.CharField(max_length=10, blank=True, null=True)
     
@@ -85,11 +87,15 @@ class Legislator(models.Model):
     twitter_id = models.CharField(max_length=100, blank=True, null=True)
     votesmart_id = models.CharField(max_length=30, blank=True, null=True)
     
+    # contact info
+    email = models.EmailField(blank=True)
+    phone = PhoneNumberField(blank=True)
+    
     class Meta:
         ordering = ('last_name', 'first_name')
     
     def __unicode__(self):
-        return u"%s (%s)" % (self.full_name, self.party)
+        return u"%s. %s (%s-%s)" % (self.title, self.full_name, self.party, self.state)
     
     def save(self, *args, **kwargs):
         if not self.nyt_uri:

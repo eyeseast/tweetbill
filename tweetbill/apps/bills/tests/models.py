@@ -35,6 +35,12 @@ class LoaderTest(TestCase):
         
         if failed:
             self.fail('\n'.join(failed))
+    
+    def test_double_load(self):
+        # bills are loaded in setUp, so load again
+        recent = get_recent_bills()
+        load_bills()
+        self.assertEqual(len(recent), Bill.objects.count())
 
 class BillTest(TestCase):
     

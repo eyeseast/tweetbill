@@ -6,8 +6,9 @@ from congress.models import Committee, Legislator
 from sunlight import Sunlight
 from nytcongress import NytCongress, get_congress
 
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'))
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'))
+# Don't cache on loaders
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY'), None)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY'), None)
 
 def committees(*chambers):
     """
@@ -42,12 +43,12 @@ def members(**kwargs):
         except Legislator.DoesNotExist:
             member = Legislator(
                 id = m['bioguide_id'],
-                title = m['title'],
+                #title = m['title'],
                 
-                first_name = m['firstname'],
-                middle_name = m['middlename'],
-                last_name = m['lastname'],
-                name_suffix = m['name_suffix'],
+                #first_name = m['firstname'],
+                #middle_name = m['middlename'],
+                #last_name = m['lastname'],
+                #name_suffix = m['name_suffix'],
             )
             
             # other fields are just copied from Sunlight

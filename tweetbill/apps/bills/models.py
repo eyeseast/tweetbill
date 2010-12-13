@@ -1,5 +1,6 @@
 import datetime
 from django.conf import settings
+from django.core.cache import cache
 from django.db import models
 
 from django.contrib.auth.models import User
@@ -10,8 +11,8 @@ from congress.models import Legislator, Committee
 from nytcongress import NytCongress, get_congress
 from sunlight import Sunlight
 
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None))
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None))
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None), cache)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), cache)
 
 
 class BillSubject(models.Model):

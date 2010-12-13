@@ -4,12 +4,8 @@ from django.test import TestCase
 
 from congress import load
 from congress.models import Committee, Legislator
+from congress.views import nyt, sunlight
 
-from nytcongress import NytCongress
-from sunlight import Sunlight
-
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None))
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None))
 
 class ViewTest(TestCase):
     

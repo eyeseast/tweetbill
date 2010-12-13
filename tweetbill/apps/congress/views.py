@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
@@ -9,8 +10,8 @@ from congress.models import Committee, Legislator
 from nytcongress import NytCongress
 from sunlight import Sunlight
 
-nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None))
-sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None))
+nyt = NytCongress(getattr(settings, 'NYT_CONGRESS_API_KEY', None), cache)
+sunlight = Sunlight(getattr(settings, 'SUNLIGHT_API_KEY', None), cache)
 
 OFFICE_TITLES = {
     'house': 'Rep',

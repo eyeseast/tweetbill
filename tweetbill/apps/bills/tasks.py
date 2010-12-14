@@ -72,7 +72,8 @@ def process_bill(bill_uri):
             introduced_date = parse_date(nyt_bill['introduced_date']),
             sponsor = sponsor,
         )
-        
+    
+    print bill_uri
     set_bill_actions(bill, nyt_bill['actions'])
 
 def set_bill_actions(bill, actions):
@@ -90,7 +91,7 @@ def set_bill_actions(bill, actions):
     # then check for existence in the db
     for i, action in enumerate(actions):
         action['datetime'] = parse_date(action['datetime'])
-        id = u"%s-%s" % (bill.id, i)
+        action['id'] = u"%s-%s" % (bill.id, i)
         action['bill'] = bill
         action['index'] = i
         

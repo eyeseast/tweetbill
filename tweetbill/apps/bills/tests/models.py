@@ -64,7 +64,16 @@ class BillTest(TestCase):
                 parse_date(a1['datetime']),
                 a2.datetime
             )
-        
+    
+    def test_bill_cosponsors(self):
+        cosponsors = nyt.bills.cosponsors('hr1', 111)
+        hr1 = nyt.bills.get('hr1', 111)
+        process_bill(hr1['bill_uri'])
+        bill = Bill.objects.get(congress=111, number='hr1')
+        self.assertEqual(
+            set(c.id for c in bill.cosponsors.all()),
+            set(c['cosponsor_id'] for c in cosponsors['cosponsors'])
+        )
     
     def test_bill_details(self):
         bill_uri = random.choice(list(self.recent_bills))

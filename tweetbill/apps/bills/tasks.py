@@ -72,8 +72,9 @@ def process_bill(bill_uri):
             introduced_date = parse_date(nyt_bill['introduced_date']),
             sponsor = sponsor,
         )
-    
+        
     set_bill_actions(bill, nyt_bill['actions'])
+    bill.cosponsors = bill._get_cosponsors(save=True)
 
 def set_bill_actions(bill, actions):
     """

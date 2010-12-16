@@ -57,7 +57,20 @@ class Bill(models.Model):
     def _get_id(self):
         "Get unique ID for a bill using Congress and bill number"
         return u"%s-%s" % (self.congress, self.number)
-
+    
+    # API related methods
+    def _get_cosponsors(self, save=False):
+        "Hit the NYT Congress API for bill cosponsors"
+        try:
+            cosponsors = nyt.bills.cosponsors(self.number, self.congress)
+        except ValueError:
+            return None
+        cos = Legislator.objects.filter(id__in=[c['cosponsor_id'] for c in cosponsors['cosponsors']])
+        if save:
+            self.cosponsors = cos
+            self.save()
+        return cos
+        
 
 class BillAction(models.Model):
     """

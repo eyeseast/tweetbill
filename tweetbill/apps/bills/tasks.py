@@ -73,7 +73,6 @@ def process_bill(bill_uri):
             sponsor = sponsor,
         )
     
-    print bill_uri
     set_bill_actions(bill, nyt_bill['actions'])
 
 def set_bill_actions(bill, actions):

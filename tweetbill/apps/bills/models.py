@@ -70,7 +70,18 @@ class Bill(models.Model):
             self.cosponsors = cos
             self.save()
         return cos
-        
+    
+    def _update_subjects(self):
+        try:
+            subjects = nyt.bills.subjects(self.number, self.congress)
+        except ValueError:
+            return None
+        subjects = [
+            self.subjects.get_or_create(
+                name=s['name'], slug=s['url_name']
+            )[0] for s in subjects['subjects']
+        ]
+        return subjects
 
 class BillAction(models.Model):
     """

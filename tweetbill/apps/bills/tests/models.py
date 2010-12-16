@@ -75,6 +75,16 @@ class BillTest(TestCase):
             set(c['cosponsor_id'] for c in cosponsors['cosponsors'])
         )
     
+    def test_bill_subjects(self):
+        subjects  = nyt.bills.subjects('hr1', 111)
+        hr1 = nyt.bills.get('hr1', 111)
+        process_bill(hr1['bill_uri'])
+        bill = Bill.objects.get(congress=111, number='hr1')
+        self.assertEqual(
+            set(s.name for s in bill.subjects.all()),
+            set(s['name'] for s in subjects['subjects'])
+        )
+        
     def test_bill_details(self):
         bill_uri = random.choice(list(self.recent_bills))
         bill_info = nyt.fetch(bill_uri)

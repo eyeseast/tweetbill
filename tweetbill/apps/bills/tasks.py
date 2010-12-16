@@ -75,6 +75,7 @@ def process_bill(bill_uri):
         
     set_bill_actions(bill, nyt_bill['actions'])
     bill.cosponsors = bill._get_cosponsors(save=True)
+    subjects = bill._update_subjects()
 
 def set_bill_actions(bill, actions):
     """

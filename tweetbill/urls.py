@@ -15,7 +15,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # (r'^admin/', include(admin.site.urls)),
     
-    url(r'^', include('congress.urls')),
+    url(r'^legislators/', include('congress.urls.legislators')),
+    url(r'^search/', include('congress.urls.search')),
+    url(r'^', include('bills.urls')),
 )
 
 if settings.DEBUG:

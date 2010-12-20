@@ -1,3 +1,5 @@
+import random
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -45,7 +47,8 @@ class ViewTest(TestCase):
     def test_legislator_detail(self):
         load.members()
         failed = []
-        for member in sunlight.legislators.getList():
+        members = random.sample(sunlight.legislators.getList(), 10)
+        for member in members:
             try:
                 m = Legislator.objects.get(id=member['bioguide_id'])
                 resp = self.client.get(reverse('congress_legislator_detail', args=(member['bioguide_id'],)))

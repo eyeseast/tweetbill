@@ -53,12 +53,14 @@ USE_L10N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = f('static')
+STATICFILES_DIRS = (
+    f('static'),
+)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/static/'
+STATIC_URL = '/static/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -73,6 +75,15 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,16 +109,24 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.staticfiles',
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'congress',
     'bills',
     'debug_toolbar',
-    'gunicorn',
+    'storages',
 )
 
 try:
     from local_settings import *
 except ImportError:
     pass
+
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+
+
+

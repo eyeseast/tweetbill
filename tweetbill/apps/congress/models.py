@@ -122,7 +122,7 @@ class Legislator(models.Model):
     
     def image(self, size='large'):
         return os.path.join(
-            settings.MEDIA_URL,
+            settings.STATIC_URL,
             'img', 'legislators',
             size, '%s.jpg' % self.id
         )

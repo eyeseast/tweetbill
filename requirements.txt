@@ -1,9 +1,11 @@
-# basics
-Django
-geopy
-httplib2
-django-debug-toolbar
+Django==1.4
+boto==2.4.1
+django-debug-toolbar==0.9.4
+django-storages==1.1.4
+geopy==0.94.1
+gunicorn==0.13.4
+httplib2==0.7.2
+python-dateutil==2.0
 
-# API Wrappers
--e git+git://github.com/eyeseast/simple-sunlight.git#egg=simple_sunlight
--e git+git://github.com/eyeseast/python-nytcongress.git#egg=python-nytcongress
+-e git://github.com/eyeseast/python-nytcongress.git@9664654695bc45838695e87a4719337a69dde604#egg=python_nytcongress-dev
+-e git://github.com/eyeseast/simple-sunlight.git@204f08d1597587a52eafdaf9e1190eddc5581a77#egg=simple_sunlight-dev
